@@ -14,7 +14,7 @@ public class ForgotPasswordTest {
 	public void forgotPasswordTest() {
 
 		AuthService authService = new AuthService();
-		Response response = authService.forgotPassword("pen.killer77@gmail.com");
+		Response response = authService.forgotPassword("john@gmail.com");
 
 		Utils utils = new Utils();
 		Assert.assertEquals(utils.getJsonPath(response, "message"), "If your email exists in our system, you will receive reset instructions.");

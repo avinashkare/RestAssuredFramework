@@ -10,7 +10,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -19,62 +19,69 @@
 				<version>3.2.5</version>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>
-							${suite}.xml
-						</suiteXmlFile>
+						<suiteXmlFile>${suite}.xml</suiteXmlFile>
 					</suiteXmlFiles>
+					<systemPropertyVariables>
+						<allure.results.directory>target/allure-results</allure.results.directory>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 
-
+			<plugin>
+				<groupId>io.qameta.allure</groupId>
+				<artifactId>allure-maven</artifactId>
+				<version>2.11.2</version>
+			</plugin>
 		</plugins>
 	</build>
+
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+		<!-- REST Assured -->
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>5.5.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<!-- TestNG -->
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>7.11.0</version>
 		</dependency>
 
-		<!--
-		https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<!-- Jackson for JSON -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.19.0</version>
 		</dependency>
 
-		<!--
-		https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.19.0</version>
 		</dependency>
 
-		<!--
-		https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<!-- Logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>2.24.3</version>
 		</dependency>
 
-		<!--
-		https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
 			<version>2.24.3</version>
 		</dependency>
 
+		<!-- Allure TestNG integration -->
+		<!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
+		<dependency>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-testng</artifactId>
+			<version>2.29.1</version>
+		</dependency>
 	</dependencies>
 </project>

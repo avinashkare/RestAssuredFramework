@@ -15,13 +15,13 @@ public class UpdateProfileTest {
 	@Test(description = "Check if Update Profile API functionality works fine")
 	public void profileRequestTest() {
 
-		LoginRequest loginRequest = new LoginRequest("pen.killer77@gmail.com", "deadman123!");
+		LoginRequest loginRequest = new LoginRequest("john2007", "john2007");
 		AuthService authService = new AuthService();
 		Response response = authService.login(loginRequest);
 		LoginResponse loginResponse = response.as(LoginResponse.class);
 		String token = loginResponse.getToken();
 
-		ProfileRequest profileRequest = new ProfileRequest.Builder().firstName("Test").lastName("Test").email("pen.killer77@gmail.com").mobileNumber("9876543210").build();
+		ProfileRequest profileRequest = new ProfileRequest.Builder().firstName("Test").lastName("Test").email("john2007").mobileNumber("9876543210").build();
 		UserManagementService userManagementService = new UserManagementService();
 		UserProfileResponse userProfileResponse = userManagementService.getProfile(token).as(UserProfileResponse.class);
 		System.out.println(userProfileResponse.getFirstName());
