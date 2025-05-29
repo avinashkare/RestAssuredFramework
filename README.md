@@ -4,7 +4,7 @@ This is a comprehensive and scalable **REST API Automation Framework** built usi
 
 ---
 
-## 📁 Project Structure (Real View)
+## 📁 Project Structure
 
 ```
 RestAssuredFramework/
