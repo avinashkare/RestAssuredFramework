@@ -1,180 +1,135 @@
 
-# RestAssured API Automation Framework ✨
+# 🚀 RestAssured API Automation Framework
 
-Welcome to the **RestAssured API Automation Framework** — a scalable, extensible, and clean architecture for testing REST APIs using Java, TestNG, Maven, and industry-level patterns. This framework is optimized for both local and CI-based executions.
-
----
-
-## 🔎 Highlights
-
-- ✅ Built with **Java 17** and **TestNG**
-- ⚖️ Uses **Service Object Model (SOM)** to modularize API endpoints
-- 🔊 **Log4j2 logging** for all test and framework events
-- ⚠️ **Request/Response filtering** for transparent debugging
-- ⚙️ **Custom listeners** for lifecycle hooks and Allure integration
-- 🌍 Fully functional **GitHub Actions CI** pipeline
-- 📊 Includes **TestNG Reports** and **Allure Reports**
-- 📂 Uploads **log files** and reports as CI artifacts
+A robust, scalable REST API test automation framework built with **Java**, **RestAssured**, and **TestNG**, using modern design principles like **Service Object Model (SOM)** and **Builder Pattern**, with fully integrated **Allure reporting**, **log capturing**, and **CI/CD via GitHub Actions**.
 
 ---
 
-## 🛠️ Technologies & Tools
-
-| Layer | Tools / Patterns |
-|------|------------------|
-| Language | Java 17 |
-| Test Framework | TestNG |
-| HTTP Client | Rest-Assured |
-| Build Tool | Maven |
-| Reporting | Allure, TestNG XML + JUnit format |
-| Logging | Log4j2 |
-| CI/CD | GitHub Actions |
-
----
-
-## 🚀 Project Structure Overview
+## 📂 Project Structure
 
 ```
-RestAssuredFramework
-├── src
-│   ├── main
-│   │   └── java
-│   │       └── ie.api
-│   │           ├── filters       # Request/Response Filters
-│   │           ├── listeners     # Log attachment, Allure integration
-│   │           ├── models        # Request/Response model classes
-│   │           ├── services      # SOM: Service Layer for APIs
-│   │           ├── utils         # Common utilities
-│   └── test
-│       └── java
-│           └── ie.api.tests      # TestNG test classes
-├── logs
-│   └── test.log                  # Log4j2 log output
-├── target
-│   ├── allure-results            # Allure raw data
-│   └── allure-report             # Generated HTML report
-├── suite.xml                     # TestNG suite config
-├── pom.xml                       # Maven dependencies
-└── .github/workflows             # GitHub Actions CI/CD YAML
+RestAssuredFramework/
+├── src/
+│   ├── main/java/ie/api/filters         # Custom RestAssured request/response filters
+│   ├── main/java/ie/api/listeners       # Allure + TestNG listeners (e.g., log attachment)
+│   ├── main/java/ie/api/models          # POJOs for request/response with builder support
+│   └── main/java/ie/api/services        # SOM classes (API clients)
+├── src/test/java/ie/api/tests           # TestNG-based test classes
+├── logs/test.log                        # Centralized Log4j2 execution log
+├── suite.xml                            # TestNG suite file
+├── pom.xml                              # Maven dependencies and plugin config
+└── .github/workflows/maven.yml          # GitHub Actions CI pipeline
 ```
 
 ---
 
-## 🔧 Key Components
+## 🔧 Core Features
 
-### 1. 📌 Service Object Model (SOM)
+### ✅ 1. **Service Object Model (SOM)**
+- Abstracts API endpoints into reusable classes under `services/`
+- Keeps test methods readable and logic separated
 
-Each API is abstracted into a **Service class** (like `LoginService`) that exposes well-named methods to send requests and parse responses. This makes the tests readable and decoupled from endpoint logic.
-
-```java
-public class LoginService {
-    public Response login(String username, String password) {
-        return given()
-                .spec(requestSpec())
-                .body(new LoginRequest(username, password))
-                .post("/api/auth/signin");
-    }
-}
-```
-
-### 2. 🔊 Log4j2 Logging
-
-All framework events, payloads, and HTTP transactions are logged to `logs/test.log`. Logger is initialized using:
+### ✅ 2. **Builder Pattern for Payloads**
+- Models in `models/` follow the builder pattern for payload creation
+- Ensures readable and maintainable request construction
 
 ```java
-private static final Logger logger = LogManager.getLogger(SomeClass.class);
-```
-
-### 3. 🔠 Filters (Rest-Assured)
-
-Custom filters log all requests/responses automatically:
-```java
-RequestLoggingFilter.requestLogger(logger);
-ResponseLoggingFilter.responseLogger(logger);
-```
-
-### 4. 🔍 Models + Builder Pattern
-
-- Request/Response bodies are modeled using POJOs
-- Builder pattern helps construct complex payloads fluently:
-
-```java
-LoginRequest.builder()
-    .username("john")
-    .password("pass")
+LoginRequest body = LoginRequest.builder()
+    .username("john2007")
+    .password("john2007")
     .build();
 ```
 
-### 5. ⚖️ Listeners
+### ✅ 3. **Log4j2 Centralized Logging**
+- All requests, responses, and test events logged to `logs/test.log`
+- Implemented via `TestListeners` and custom `LoggingFilter`
 
-- Custom TestNG listeners like `TestListeners` and `AllureLogListener`
-- Hooks into `onTestSuccess`, `onTestFailure`, and `onExecutionFinish`
-- Dynamically attaches `logs/test.log` as Allure attachment using:
+### ✅ 4. **Custom Filters**
+- Filters log base URI, headers, request/response body
+- Implemented in `ie.api.filters.LoggingFilter`
 
-```java
-Allure.addAttachment("Execution Log", new FileInputStream("logs/test.log"));
-```
+### ✅ 5. **TestNG Listeners**
+- `AllureLogListener` attaches execution log to Allure report
+- `TestListeners` log test method start/end with descriptions
 
----
-
-## 📊 Reporting
-
-### ✅ TestNG XML Reports
-
-- JUnit-style reports generated in `target/surefire-reports/junitreports`
-- Integrated with GitHub Actions using:
-```yaml
-- name: Publish Test Report
-  uses: dorny/test-reporter@v1
-```
-
-### 🌟 Allure Reports
-
-- Allure results collected in `target/allure-results`
-- Report generated and uploaded via GitHub Actions:
-```yaml
-- run: allure generate target/allure-results --clean -o target/allure-report
-- uses: actions/upload-artifact@v4.6.2
-```
-- **Execution log is viewable inside the Allure report as an attachment**
-
----
-
-## ♻️ CI/CD: GitHub Actions
-
-### Pipeline Features:
-- Maven build and test execution
-- Log file upload (`logs/test.log`)
-- TestNG results publishing
-- Allure report generation and artifact upload
-
-**No GitHub token or secrets needed.**
-
----
-
-## ⚡ How to Run
+### ✅ 6. **Allure Reports Integration**
+- Automatically generated after test runs
+- Includes:
+  - Test steps
+  - Request & response logs (via filters)
+  - Attached `test.log`
 
 ```bash
 mvn clean test -Dsuite=suite
 allure serve target/allure-results
 ```
 
-Or just push to `main` branch — GitHub Actions will do the rest 🚀
+---
+
+## ✅ CI/CD with GitHub Actions
+
+GitHub Actions pipeline (`.github/workflows/maven.yml`) includes:
+
+- ✅ JDK setup
+- ✅ Maven test run
+- ✅ Upload of:
+  - 🧪 TestNG JUnit-style reports
+  - 📄 Allure results (with log attachment)
+  - 📦 Logs directory
 
 ---
 
-## 🔹 Future Enhancements
-- [ ] Add test coverage reports
-- [ ] Include Swagger validation
-- [ ] Dockerized execution
-- [ ] Auto email/slack reporting
-- [ ] Test data injection via Excel/JSON/YAML
+## 📄 Reporting
+
+### 🧪 TestNG Reports
+- Generated under:
+  - `target/surefire-reports/`
+  - `test-output/emailable-report.html`
+
+### 🧬 Allure Reports
+- View command:
+  ```bash
+  allure serve target/allure-results
+  ```
+- Includes:
+  - Each test case as an Allure step
+  - Attached execution log from `logs/test.log`
+  - Clean visual breakdown
 
 ---
 
-## 🎉 Maintainer
-Built with ❤️ by [Your Name] for scalable, industry-level API testing.
+## 🧪 Running Tests
+
+```bash
+mvn clean test -Dsuite=suite
+```
+
+> Make sure `suite.xml` points to the correct class names and listeners are registered.
 
 ---
 
-Need enhancements, help with CI integration, or cross-browser execution? Open an issue or ping the maintainer.
+## 📦 Build with Maven
+
+```bash
+mvn clean install
+```
+
+---
+
+## 👥 Contributing
+
+- Follow clean code and modular practices
+- Prefer builder pattern over raw POJOs
+- Abstract endpoints and reusables into `services/`
+
+---
+
+## 🧾 License
+
+MIT – feel free to fork and improve!
+
+---
+
+## 🙌 Acknowledgments
+
+Special thanks to contributors and those helping maintain long-term test frameworks for APIs at scale 🚀
