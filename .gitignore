@@ -10,9 +10,14 @@
 # Maven build directory
 target/
 
+# Maven build directory
+test-output/
+
 # Eclipse build directory
 bin/
 
 # Log files
 logs.txt
 
+# Log folder
+logs/
