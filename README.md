@@ -99,10 +99,7 @@ allure serve target/allure-report
 
 ## 🙌 Contributors
 
-Maintained by: `@YourTeam`
+Developed and maintained by: `Avinash Kare`
 
 ---
 
-## 📄 License
-
-MIT License
